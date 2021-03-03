@@ -1,4 +1,5 @@
 import names from './names';
+import './style.css';
 
 const ulElement = document.createElement('ul');
 
