@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "outDir": "./build",
+
+    "strict": true,
+
+    "moduleResolution": "node",
+    "esModuleInterop": true, // __importDefault 가능하게 설정
+
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]
+}
