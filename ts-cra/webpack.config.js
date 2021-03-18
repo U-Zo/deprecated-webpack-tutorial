@@ -1,5 +1,6 @@
 const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 const appIndex = path.resolve(__dirname, 'src', 'index.tsx');
 const appBuild = path.resolve(__dirname, 'build');
@@ -57,7 +58,6 @@ module.exports = () => {
           options: {
             outputPath: 'static/media',
             name: '[name].[hash:8].[ext]',
-            esModule: false,
           },
         },
         {
@@ -82,13 +82,33 @@ module.exports = () => {
           extends: ['eslint-config-react-app/base'],
         },
       }),
+      new WebpackManifestPlugin({
+        generate: (seed, files, entrypoints) => {
+          const manifestFiles = files.reduce(
+            (manifest, { name, path }) => ({
+              ...manifest,
+              [name]: path,
+            }),
+            seed
+          );
+
+          const entryFiles = entrypoints.main.filter(
+            (filename) => !/\.map/.test(filename)
+          );
+
+          return {
+            files: manifestFiles,
+            entrypoints: entryFiles,
+          };
+        },
+      }),
       new HtmlWebpackPlugin({
         template: appHtml,
       }),
       new webpack.DefinePlugin(clientEnv),
     ],
     resolve: {
-      extensions: ['.tsx', '.ts', 'jsx', 'js'],
+      extensions: ['.tsx', '.ts', '.jsx', '.js'],
     },
   };
 };
